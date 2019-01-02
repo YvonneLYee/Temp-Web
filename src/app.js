@@ -1,4 +1,4 @@
-var api = require('./neo4jApi');
+var api = require('./adb_api');
 
 $(function () {
   renderGraph();
@@ -25,31 +25,38 @@ function showMovie(title) {
     }, "json");
 }
 
+// function search() {
+//   var query = $("#search").find("input[name=search]").val();
+//   api
+//     .searchMovies(query)
+//     .then(movies => {
+//       var t = $("table#results tbody").empty();
+
+//       if (movies) {
+//         movies.forEach(movie => {
+//           $("<tr><td class='movie'>" + movie.title + "</td><td>" + movie.released + "</td><td>" + movie.tagline + "</td></tr>").appendTo(t)
+//             .click(function () {
+//               showMovie($(this).find("td.movie").text());
+//             })
+//         });
+
+//         var first = movies[0];
+//         if (first) {
+//           showMovie(first.title);
+//         }
+//       }
+//     });
+// }
+
 function search() {
   var query = $("#search").find("input[name=search]").val();
-  api
-    .searchMovies(query)
-    .then(movies => {
-      var t = $("table#results tbody").empty();
-
-      if (movies) {
-        movies.forEach(movie => {
-          $("<tr><td class='movie'>" + movie.title + "</td><td>" + movie.released + "</td><td>" + movie.tagline + "</td></tr>").appendTo(t)
-            .click(function() {
-              showMovie($(this).find("td.movie").text());
-            })
-        });
-
-        var first = movies[0];
-        if (first) {
-          showMovie(first.title);
-        }
-      }
-    });
+  api.getCourseByTitle(query)
+    .then(result => {});
 }
 
 function renderGraph() {
-  var width = 800, height = 800;
+  var width = 800,
+    height = 800;
   var force = d3.layout.force()
     .charge(-200).linkDistance(30).size([width, height]);
 
